@@ -1,8 +1,30 @@
 
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
+{% block title %}Evaluated Stock Prices{% endblock %}
 
 {% block content %}
+<section id="stock-evaluations">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
 
-<h1>{{title}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
 
+{% block page_scripts %}
+ <script type="text/javascript" src="{{ url_for('static', filename='js/stock-evals.js') }}"></script> 
+
+<script>
+    // jquery document ready call
+    $(function() {
+        var data = JSON.parse('{{ data | tojson | safe}}');
+
+        console.log(data);
+    });
+</script>
 {% endblock %}

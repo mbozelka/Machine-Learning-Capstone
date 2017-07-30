@@ -1,5 +1,6 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, redirect, url_for, render_template, request
+from app.main import stocks_data
 
 app = Flask(__name__)
 
@@ -9,15 +10,13 @@ def index():
 
 @app.route('/stocks-evaluation')
 def stock_eval():
-    dates = request.args.get('dates')
-    ticks = request.args.get('ticks')
+    symbols = request.args.get('symbols')
+    data = stocks_data()
 
-    if not dates and not ticks:
-        title = 'no querries made'
-    else:
-        title = ticks
+    if not symbols:
+        return redirect('')
 
-    return render_template('stocks-evaluation.html', title=title)
+    return render_template('stocks-evaluation.html', data=data)
 
 
 

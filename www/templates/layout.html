@@ -3,18 +3,20 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title>{% block title %}{% endblock %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,500,500i" rel="stylesheet">
+        <link href="{{ url_for('static', filename='styles/flexboxgrid.min.css') }}" rel="stylesheet"/>
         <link href="{{ url_for('static', filename='styles/main.css') }}" rel="stylesheet"/>
 
     </head>
     <body>
-        
-        {% block content %}
-        {% endblock %}
-
+        {% include 'header.html' %}
+        {% block content %}{% endblock %}
+        {% include 'footer.html' %}
+        {% include 'scripts.html' %}
+        {% block page_scripts %}{% endblock %}
     </body>
 </html>
