@@ -81,12 +81,34 @@ h1, h2, h3, h4, h5, h6{
 	font-weight: 300;
 }
 
+h1{
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 3.8em;
+}
+
+h2{
+	font-size: 2.8em;
+}
+
+h3{
+	font-size: 2.3em;
+}
+
 p, li, label{
 	font-size: 1.6em;
 }
 
 li li{
 	font-size: 100%;
+}
+
+h2.header{
+	text-align: left;
+	color: #148990;
+	width: 100%;
+	padding: 0 20px 0;
+	margin-bottom: 30px;
 }
 
 input[type=text]{
@@ -134,11 +156,6 @@ header{
 	margin: 0;
 }
 
-h1{
-	color: #fff;
-	font-size: 3.4em;
-	text-transform: uppercase;
-}
 
 /*************************************
 Disclaimer
@@ -221,4 +238,33 @@ footer .container{
 
 footer p{
 	font-size: 1.2em;
+}
+
+
+/*************************************
+Stats
+*************************************/
+
+#stats .stat-list table{
+	width: 100%;
+}
+
+#stats .stat-list table td, #stats .stat-list table th{
+	border: 1px solid #eee;
+	font-size: 1.6em;
+	text-align: left;
+	padding: 10px;
+}
+
+#stats .stat-list table th{
+	color: #148990;
+	font-weight: 500;
+}
+
+#stats h3{
+	padding-bottom: 10px;
+}
+
+#stats p span{
+	color: #148990;
 }

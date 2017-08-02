@@ -1,4 +1,3 @@
-
 {% extends 'layout.html' %}
 {% block title %}Evaluated Stock Prices{% endblock %}
 
@@ -12,11 +11,11 @@
 {% endblock %}
 
 {% block page_scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/test.js') }}"></script> 
 <script type="text/javascript" src="{{ url_for('static', filename='js/stocks-display.js') }}"></script> 
 
 <script>
-    window.stockData = JSON.parse('{{ data | tojson | safe}}');
-
+    console.log(window.stockData);
     angular.module('displayApp', [
         'displays'
     ]);
