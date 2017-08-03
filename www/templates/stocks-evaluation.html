@@ -17,6 +17,13 @@
 <script>
     window.stockData = JSON.parse('{{ data | tojson | safe}}');
 
+    console.log(window.stockData);
+    
+    var str = JSON.stringify(window.stockData);
+    str = JSON.stringify(window.stockData, null, 4); 
+
+    document.body.append(str);
+
     angular.module('displayApp', [
         'displays'
     ]);

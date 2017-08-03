@@ -2,11 +2,14 @@
 {% block title %}Evaluated Stock Prices{% endblock %}
 
 {% block content %}
+<!-- visualization of nromed graphs -->
+<cm-normed-display></cm-normed-display>
+
 <!-- stats for each stock selected -->
 <cm-stats-display></cm-stats-display>
 
-<!-- visualization of nromed graphs -->
-<cm-normed-display></cm-normed-display>
+<!-- Predicted Fututre Values -->
+<cm-prediction-breakdown></cm-prediction-breakdown>
 
 {% endblock %}
 

@@ -7,11 +7,11 @@ def stocks_data(symbol_list):
     sts = Stock_Time_Series()
     stocks_df, good_symbols, bad_symbols = sts.fetch_data(symbol_list)
     retrun_json = {}
-    retrun_json['Stocks'] = {}
+    retrun_json['Stocks'] = []
 
     for symbol in good_symbols:
         stock_data = Stock_Explorer(stocks_df[symbol], symbol)
-        retrun_json['Stocks'][symbol] = stock_data.get_json()
+        retrun_json['Stocks'].append(stock_data.get_json())
 
     retrun_json['successful'] = good_symbols
     retrun_json['errors'] = bad_symbols

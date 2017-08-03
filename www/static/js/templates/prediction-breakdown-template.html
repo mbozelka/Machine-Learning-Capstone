@@ -1,0 +1,73 @@
+<section id="predic-breakdown">
+     <div class="container-fluid">
+        <div class="row center-xs">
+            <div class="col-xs-12">
+                <div class="box"><h2 class="header">Predictions Break Down</h2></div>
+            </div>
+        </div>
+        <div class="row center-xs">
+            <div class="col-xs-12">
+                <div class="box">
+                    <h3>Evaluation Scores <span>(rounded)</span></h3>
+                    <table class="eval-scores">
+                        <tr>
+                            <th></th>
+                            <th>Training Score Mean</th>
+                            <th>Testing Score Mean</th>
+                        </tr>
+                        <tr ng-repeat="(key, value) in pb.stocks"> 
+                            <th>{{value.Symbol}}</th>
+                            <td>%{{value.Train_Test_Data.train_mean * 100 | number : 2}}</td>
+                            <td>%{{value.Train_Test_Data.test_mean * 100 | number : 2}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row center-xs">
+            <div class="col-xs-12">
+                <div class="box">
+                    <h3>Adjusted Close Predictions <span>(rounded)</span></h3>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>
+                                {{ pb.getDate( pb.predictionDates[pb.indicies[0]]) | date:'dd-MM-yyyy' }}<br/>
+                                <span>1 Day Out</span>
+                            </th>
+                            <th>
+                                {{ pb.getDate( pb.predictionDates[pb.indicies[1]]) | date:'dd-MM-yyyy' }}<br/>
+                                <span>7 Days Out</span>
+                            </th>
+                            <th>
+                                {{ pb.getDate( pb.predictionDates[pb.indicies[2]]) | date:'dd-MM-yyyy' }}<br/>
+                                <span>14 Days Out</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Prediction Confidence</th>
+                            <td><i class="fa fa-smile-o" aria-hidden="true"></i></td>
+                            <td><i class="fa fa-meh-o" aria-hidden="true"></i></td>
+                            <td><i class="fa fa-frown-o" aria-hidden="true"></i></td>
+                        </tr>
+                        <tr ng-repeat="(key, value) in pb.stocks"> 
+                            <th> {{value.Symbol}}</th>
+                            <td>
+                                {{ pb.getAdjClose( value, pb.indicies[0] ) | currency }} <br/>
+                                <span>Action: {{ pb.getAction( value, pb.indicies[0] ) }}</span>
+                            </td>
+                            <td>
+                                {{ pb.getAdjClose( value, pb.indicies[1] ) | currency}} <br/>
+                                <span>Action: {{ pb.getAction( value, pb.indicies[1] ) }}</span>
+                            </td>
+                            <td>
+                                {{ pb.getAdjClose( value, pb.indicies[2] ) | currency}} <br/>
+                                <span>Action: {{ pb.getAction( value, pb.indicies[2] ) }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> 
+</section>
