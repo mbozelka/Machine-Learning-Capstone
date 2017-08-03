@@ -68,7 +68,7 @@ body {
 }
 
 .container-fluid {
-	max-width: 800px;
+	max-width: 900px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -260,7 +260,7 @@ table{
 }
 
 table td, table th{
-	border: 1px solid #8e8e8e;
+	border: 1px solid #eee;
 	font-size: 1.6em;
 	text-align: center;
 	padding: 10px;
@@ -303,12 +303,14 @@ table .fa.fa-frown-o{
 Chart stylings
 *************************************/
 
-svg.chart{
-	border: 1px solid #8e8e8e;
-	width: 100%;
-	height: 400px;
+svg.svg-graph{
+	border: 1px solid #eee;
 }
 
+.point{
+	shape-rendering: crispEdges;
+}
 .trend-line{
 	fill: none;
+	stroke-width: 2;
 }

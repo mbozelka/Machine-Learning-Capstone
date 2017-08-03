@@ -18,12 +18,38 @@ angular.module('displays', [])
     function DataService() {
         var data = window.stockData;
         var service = {
-            getData: getData
+            getData: getData,
+            getPredictionIndicies: getPredictionIndicies,
+            getStats: getStats
         };
         return service;
 
         function getData() {
             return data;
+        }
+
+        function getPredictionIndicies(){
+            var intervals = [];
+            var predictionRange = data['Stocks'][0]['Prediction_Size'];
+            var dates = data['Stocks'][0]['Dates'];
+            
+            if(predictionRange <= 0 || dates.length <= 0) return intervals;
+            intervals.push(dates.length - predictionRange);
+            intervals.push(dates.length - (predictionRange/2));
+            intervals.push(dates.length - 1);
+            return intervals;
+        }
+
+        function getStats(){
+            var stats = [];
+
+            for(var i = 0; i < data['Stocks'].length; i++){
+                var statsObj = data['Stocks'][i]['Stats'];
+                statsObj['name'] = data['Stocks'][i]['Symbol'];
+                stats.push(statsObj);
+            }
+
+            return stats
         }
     }
 
@@ -33,6 +59,36 @@ angular.module('displays', [])
         var data = DataService.getData();
 
         nd.dates = data['Stocks'][0]['Dates'];
+        nd.indicies = DataService.getPredictionIndicies();
+        nd.predLength = data['Stocks'][0]['Prediction_Size'];
+
+        nd.getVals = function(){
+            var vals = [];
+
+            for(var i = 0; i < data['Stocks'].length; i++){
+                vals.push({
+                    'symbol': data['Stocks'][i]['Symbol'],
+                    'values': data['Stocks'][i]['Normed_Data']
+                })
+            }
+
+            return vals;
+        }
+
+        nd.getMax = function(lists){
+            var max = 0;
+
+            for(var i = 0; i < lists.length; i++){
+                var valList = lists[i]['values'];
+                for(var k = 0; k < valList.length; k++){
+                    if(valList[k] > max){
+                        max = valList[k];
+                    }
+                }
+            }
+
+            return max;
+        }
     }
     
     function NormedDisplay() {
@@ -46,37 +102,99 @@ angular.module('displays', [])
         return directive;
 
         function link(scope, element, attrs, cntrl) {
-    
-            console.log(cntrl.dates);
+            var wrapper, svg, chart, dateParser, xScaller, yScaller, margins,
+            svgHeight, svgWidth, gHeight, gWidth, valuesList, predValuesList, colors, predictedColor,
+            legendData = [];
 
-            var svg = d3.select('.chart-wrapper')
-                            .append('svg')
-                            .classed('chart', true);
+            colors = ['1c77c3', '39a9db', '40bcd8', 'f39237', 'd63230'];
+            predictedColor = ['d63230']
+            wrapper = d3.select('.chart-wrapper').node();
+            margins = {'top':20, 'right':20, 'bottom':30, 'left':40};
+            svgHeight = 400;
+            svgWidth = wrapper.getBoundingClientRect().width;
+            gHeight = svgHeight - (margins.top + margins.bottom);
+            gWidth = svgWidth - (margins.left + margins.right);
 
-            var chart = svg.append('g')
-                            .classed('display', true)
-                            .attr('transform', 'translate(100, 0)');
+            //console.log(cntrl.indicies);
+            valuesList = cntrl.getVals();
+            predValuesList = cntrl.getVals();
 
-            var dateParser = d3.timeParse('%Y-%m-%d');
+            //console.log(valuesList);
+            svg = d3.select('.chart-wrapper')
+                        .append('svg')
+                        .attr('width', svgWidth)
+                        .attr('height', svgHeight)
+                        .classed('svg-graph', true);
 
-            var xScaller = d3.scaleTime()
-                            .domain(d3.extent(cntrl.dates, function(d){
-                                var date = dateParser(d);
-                                return date;
-                            }))
-                            .range([0, 700]);
+            chart = svg.append('g')
+                        .classed('display', true)
+                        .attr('width', gWidth)
+                        .attr('height', gHeight)
+                        .attr('transform', 'translate('+ margins.left +', '+ margins.top +')');
 
-            var yScaller = d3.scaleLinear()
-                            .domain([0, 300])
-                            .range([300, 0]);
+            dateParser = d3.timeParse('%Y-%m-%d');
+
+            xScaller = d3.scaleTime()
+                        .domain(d3.extent(cntrl.dates, function(d){
+                            var date = dateParser(d);
+                            return date;
+                        }))
+                        .range([0, gWidth]);
+
+            yScaller = d3.scaleLinear()
+                        .domain([0, cntrl.getMax(valuesList)])
+                        .range([gHeight, 0]);
             
             drawX_Axis.call(chart, {
-                scaller:  xScaller
+                scaller: xScaller,
+                gHeight: gHeight
             });
 
             drawY_Axis.call(chart, {
-                scaller:  yScaller
-            })
+                scaller: yScaller
+            });
+
+            for(var i = 0; i < valuesList.length; i++){
+                var v = valuesList[i]['values'].slice(0, -cntrl.predLength + 1);
+                var vp = valuesList[i]['values'].slice(cntrl.indicies[0]);
+                var dp = cntrl.dates.slice(cntrl.indicies[0]);
+
+                var config = {
+                    dates: cntrl.dates,
+                    data: v,
+                    dateParser: dateParser,
+                    xScaller: xScaller,
+                    yScaller: yScaller,
+                    color: colors[i]
+                }
+
+                config.className = ['trend-line', 'line-' + i];
+                drawDateLine.call(chart, config);
+
+                config.className = ['point', 'point-set-' + i];
+                drawDatePoints.call(chart, config);
+
+                // predictions
+                config.className = ['trend-line', 'line-predict-' + i];
+                config.data = vp;
+                config.dates = dp;
+                config.color = predictedColor;
+                drawDateLine.call(chart, config);
+
+                config.className = ['point', 'point-set-predict-' + i];
+                drawDatePoints.call(chart, config);
+
+                legendData.push({
+                    color: colors[i],
+                    value: valuesList[i].symbol
+                });
+            }
+
+            legendData.push({
+                color: predictedColor,
+                value: 'Predicted'
+            });
+            console.log(legendData);
         }
     }
 
@@ -84,19 +202,7 @@ angular.module('displays', [])
     function StatsDisplayCtnl(DataService) {
         var sd = this;
         var data = DataService.getData();
-        sd.stats = isolateStats(data);
-
-        function isolateStats(data){
-            var stats = [];
-
-            for(var i = 0; i < data['Stocks'].length; i++){
-                var statsObj = data['Stocks'][i]['Stats'];
-                statsObj['name'] = data['Stocks'][i]['Symbol'];
-                stats.push(statsObj);
-            }
-
-            return stats
-        }
+        sd.stats = DataService.getStats();
     }
     
     function StatsDisplay() {
@@ -117,11 +223,11 @@ angular.module('displays', [])
     function PredictionBreakdownCtnl(DataService) {
         var pb = this;
         var data = DataService.getData();
-        var predictionRange = data['Stocks'][0]['Prediction_Size'];
-        pb.stocks = data['Stocks'];
-        pb.predictionDates = pb.stocks[0]['Dates'];
-        pb.indicies = getPredictionIndiciesSubset(predictionRange, pb.predictionDates.length);
 
+        pb.stocks = data['Stocks'];
+        pb.dates = pb.stocks[0]['Dates'];
+        pb.indicies = DataService.getPredictionIndicies();
+        
         pb.getDate = function(d){
             return new Date(d);
         }
@@ -158,51 +264,33 @@ angular.module('displays', [])
 
 
 
-    /*
-    // scale returns a scaler function
-    var x_scaler = d3.scale.linear()
-                    .domain([0, max]) // min, max scaler
-                    .range([0, w]) // 
 
-    var y_scaler = d3.scale.linear()
-                    .domain([0, max]) // min, max scaler
-                    .range([0, w]) //
 
-    // groups
-    var groupname = svg.append('g')
-                        .classed('display', true);
 
-    // clsas
-    .classed('class_name', true)
 
-    // labels example
-    svg.selectAll('.class-name')
-        .data(data)
-        .enter()
-            .append('text')
-            .classed('class_name', true)
-            .text((d,i) =>{
-                return d;
-            })
 
-    */
+
+
+
+
+
+
+
+
 
     // Helper functions
     
     function drawX_Axis(config) {
-        var xAxis = d3.axisBottom()
-                        .scale(config.scaller);
-
+        var xAxis = d3.axisBottom().scale(config.scaller);
         // x axis creation
         this.append('g')
             .classed('x axis', true)
-            .attr('transform', 'translate(0, 0)')
+            .attr('transform', 'translate(0, ' + config.gHeight + ')')
             .call(xAxis);
     }
 
     function drawY_Axis(config) {
-        var yAxis = d3.axisLeft()
-                        .scale(config.scaller);
+        var yAxis = d3.axisLeft().scale(config.scaller);
 
         // y axis creation
         this.append('g')
@@ -212,27 +300,29 @@ angular.module('displays', [])
     }
 
     function drawDatePoints(config) {
-
         // enter()
-        this.selectAll('.point')
+        this.selectAll('.' + config.className.join('.'))
             .data(config.data)
             .enter()
             .append('circle')
-            .classed('point', true)
+            .style("fill", function(d) { 
+                return config.color;
+            })
+            .classed(config.className.join(' '), true)
             .attr('r', 2);
 
         // update
-        this.selectAll('.point')
-            .attr('cx', function(d){
-                var date = config.dateParser(d);
+        this.selectAll('.' + config.className.join('.'))
+            .attr('cx', function(d, i){
+                var date = config.dateParser(config.dates[i]);
                 return config.xScaller(date);
             })
-            .attr('cy', function(value){
-                return config.yScaller(value);
+            .attr('cy', function(d){
+                return config.yScaller(d);
             });
 
         // exit()
-        this.selectAll('.point')
+        this.selectAll('.' + config.className.join('.'))
             .data(config.data)
             .exit()
             .remove();
@@ -240,9 +330,10 @@ angular.module('displays', [])
 
     function drawDateLine(config) {
         // line generating function
-        var line = d3.svg.line()
-                    .x(function(d){
-                        var date = config.dateParser(d);
+
+        var line = d3.line()
+                    .x(function(d, i){
+                        var date = config.dateParser(config.dates[i]);
                         return config.xScaller(date);
                     })
                     .y(function(d){
@@ -250,33 +341,26 @@ angular.module('displays', [])
                     });
 
         // enter()
-        this.selectAll('.trend-line')
+        this.selectAll('.' + config.className.join('.'))
             .data([config.data])
             .enter()
             .append('path')
-            .classed('trend-line', true);
+            .style("stroke", function(d) { 
+                return config.color;
+            })
+            .classed(config.className.join(' '), true);
 
         // update
-        this.selectAll('.trend-line')
+        this.selectAll('.' + config.className.join('.'))
             .attr('d', function(d){
                 return line(d);
             });
 
         // exit()
-        this.selectAll('.trend-line')
+        this.selectAll('.' + config.className.join('.'))
             .data([config.data])
             .exit()
             .remove();
-    }
-
-    function getPredictionIndiciesSubset(predictionRange, predictionLength){
-        var intervals = []
-        
-        if(predictionRange <= 0 || predictionLength <= 0) return intervals;
-        intervals.push(predictionLength - predictionRange);
-        intervals.push(predictionLength - (predictionRange/2));
-        intervals.push(predictionLength - 1);
-        return intervals;
     }
 
 })(window, document);

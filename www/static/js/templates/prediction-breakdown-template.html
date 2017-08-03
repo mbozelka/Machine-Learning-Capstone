@@ -32,20 +32,20 @@
                         <tr>
                             <th></th>
                             <th>
-                                {{ pb.getDate( pb.predictionDates[pb.indicies[0]]) | date:'dd-MM-yyyy' }}<br/>
+                                {{ pb.getDate( pb.dates[pb.indicies[0]]) | date:'dd-MM-yyyy' }}<br/>
                                 <span>1 Day Out</span>
                             </th>
                             <th>
-                                {{ pb.getDate( pb.predictionDates[pb.indicies[1]]) | date:'dd-MM-yyyy' }}<br/>
+                                {{ pb.getDate( pb.dates[pb.indicies[1]]) | date:'dd-MM-yyyy' }}<br/>
                                 <span>7 Days Out</span>
                             </th>
                             <th>
-                                {{ pb.getDate( pb.predictionDates[pb.indicies[2]]) | date:'dd-MM-yyyy' }}<br/>
+                                {{ pb.getDate( pb.dates[pb.indicies[2]]) | date:'dd-MM-yyyy' }}<br/>
                                 <span>14 Days Out</span>
                             </th>
                         </tr>
                         <tr>
-                            <th>Prediction Confidence</th>
+                            <th>Prediction<br/>Confidence</th>
                             <td><i class="fa fa-smile-o" aria-hidden="true"></i></td>
                             <td><i class="fa fa-meh-o" aria-hidden="true"></i></td>
                             <td><i class="fa fa-frown-o" aria-hidden="true"></i></td>
