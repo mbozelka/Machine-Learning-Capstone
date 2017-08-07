@@ -3,29 +3,58 @@
 {% block title %}Evaluated Stock Prices{% endblock %}
 
 {% block content %}
-<!-- stats for each stock selected -->
-<cm-stats-display></cm-stats-display>
+<section id="normed-graph">
+     <div class="container-fluid">
+        <div class="row center-xs">
+            <div class="col-xs-12">
+                <div class="box">
+                    <h2 class="header">Normalized Values Evaluation Against SPY</h2>
+                </div>
+                <!-- visualization of nromed graphs -->
+                <cm-normed-display></cm-normed-display>
+            </div>
+        </div>
+    </div> 
+</section>
 
-<!-- visualization of nromed graphs -->
-<cm-normed-display></cm-normed-display>
+<section id="stats">
+     <div class="container-fluid">
+        <div class="row center-xs stat-list">
+            <div class="col-xs-12">
+                <div class="box">
+                    <h3>Normalized Stats <span>(rounded)</span></h3>
+                    <cm-stats-display></cm-stats-display>
+                </div>
+            </div>
+        </div>
+    </div> 
+</section>
+
+<!-- Predicted Fututre Values -->
+<cm-prediction-breakdown></cm-prediction-breakdown>
 
 {% endblock %}
 
 {% block page_scripts %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/stocks-display.js') }}"></script> 
+<script type="text/javascript" src="{{ url_for('static', filename='js/chart.service.js') }}"></script> 
+<script type="text/javascript" src="{{ url_for('static', filename='js/data.service.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bb-graph.module.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/normed-graph.module.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/stats.module.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/predictions.module.js') }}"></script> 
 
 <script>
     window.stockData = JSON.parse('{{ data | tojson | safe}}');
 
     console.log(window.stockData);
-    
-    var str = JSON.stringify(window.stockData);
-    str = JSON.stringify(window.stockData, null, 4); 
-
-    document.body.append(str);
 
     angular.module('displayApp', [
-        'displays'
+        'dataService',
+        'chartService',
+        'normalizedGraph',
+        'bbGraph',
+        'statsModule',
+        'predictions'
     ]);
 
     angular.element(function() {

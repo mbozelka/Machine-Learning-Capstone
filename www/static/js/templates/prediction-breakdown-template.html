@@ -1,12 +1,8 @@
-<section id="predic-breakdown">
+<section id="prediction-scores">
      <div class="container-fluid">
-        <div class="row center-xs">
+         <div class="row center-xs">
             <div class="col-xs-12">
                 <div class="box"><h2 class="header">Predictions Break Down</h2></div>
-            </div>
-        </div>
-        <div class="row center-xs">
-            <div class="col-xs-12">
                 <div class="box">
                     <h3>Evaluation Scores <span>(rounded)</span></h3>
                     <table class="eval-scores">
@@ -24,7 +20,12 @@
                 </div>
             </div>
         </div>
-        <div class="row center-xs">
+     </div>
+</section>
+
+<section id="prediction-outcomes">
+     <div class="container-fluid">
+         <div class="row center-xs">
             <div class="col-xs-12">
                 <div class="box">
                     <h3>Adjusted Close Predictions <span>(rounded)</span></h3>
@@ -69,5 +70,11 @@
                 </div>
             </div>
         </div>
+     </div>
+</section>
+
+<section id="bb-graph">
+     <div class="container-fluid" ng-repeat="(key, value) in pb.stocks">
+        <cm-bb-graph data-symbol="{{pb.stocks[key].Symbol}}"></cm-bb-graph>
     </div> 
 </section>

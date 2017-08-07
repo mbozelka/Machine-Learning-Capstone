@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from stock_classifier import Stock_Classifier
 
 class Stock_Explorer:
-    def __init__(self, series, symbol, rolling_window_size=10, prediction_window_size=14, retrun_date_range=20):
+    def __init__(self, series, symbol, rolling_window_size=10, prediction_window_size=14, retrun_date_range=100):
         self.symbol = symbol
         self.stock_clf = Stock_Classifier()
         self.series = series
@@ -35,6 +35,8 @@ class Stock_Explorer:
         
         date_range = self.retrun_date_range + self.prediction_window_size
 
+        normed_range = self.__get_normalize_values(date_range)
+
         final_json['Symbol'] = self.symbol
         final_json['BB_Ratios'] = self.X_features['BB_RATIOS'].tail(date_range).values.tolist()
         final_json['Momentum'] = self.X_features['MOMENTUM'].tail(date_range).values.tolist()
@@ -43,9 +45,9 @@ class Stock_Explorer:
         final_json['Lower_bb'] = lower_bb.tail(date_range).values.tolist()
         final_json['Upper_bb'] = upper_bb.tail(date_range).values.tolist()
         final_json['Target_Vals'] = self.y_target.tail(date_range).values.tolist()
-        final_json['Normed_Data'] = self.__get_normalize_values().tail(date_range).values.tolist()
+        final_json['Normed_Data'] = normed_range.values.tolist()
         
-        final_json['Stats'] = self.__get_stats()
+        final_json['Stats'] = self.__get_stats(normed_range)
         final_json['Prediction_Size'] = self.prediction_window_size
         final_json['Train_Test_Data'] = train_test_data
         final_json['Dates'] = self.__dates_to_string(date_range)
@@ -167,16 +169,16 @@ class Stock_Explorer:
 
 
 
-    def __get_normalize_values(self):
-        w = self.rolling_window_size
-        normed = self.series/self.series[0:1].values
-        return normed[w:]
+    def __get_normalize_values(self, date_range):
+        return_range = self.series.tail(date_range)
+        normed = return_range /return_range [0:1].values
+        return normed
     
 
 
 
-    def __get_stats(self):
-        vals = self.series.values
+    def __get_stats(self, series):
+        vals = series.values
         return {
             'Mean' : np.mean(vals),
             'Median' : np.median(vals),

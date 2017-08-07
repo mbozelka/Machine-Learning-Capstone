@@ -1,30 +1,14 @@
-<section id="stats">
-     <div class="container-fluid">
-        <div class="row center-xs">
-            <div class="col-xs-12">
-                <div class="box"><h2 class="header">Statistics Over the Entire Training Period</h2></div>
-            </div>
-        </div>
-        <div class="row center-xs stat-list">
-            <div class="col-xs-12">
-                <div class="box">
-                    <h3>Normalized Stats <span>(rounded)</span></h3>
-                    <table>
-                        <tr>
-                            <th></th>
-                            <th>Mean</th>
-                            <th>Median</th>
-                            <th>STD</th>
-                        </tr>
-                        <tr ng-repeat="(key, value) in sd.stats"> 
-                            <th class="left-align">{{value.name}}</th>
-                            <td>{{value.Mean | number : 2}}</td>
-                            <td>{{value.Median | number : 2}}</td>
-                            <td>{{value.Std | number : 2}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div> 
-</section>
+<table>
+    <tr>
+        <th></th>
+        <th>Mean</th>
+        <th>Median</th>
+        <th>STD</th>
+    </tr>
+    <tr ng-repeat="(key, value) in sd.stats"> 
+        <th class="left-align">{{value.name}}</th>
+        <td>{{value.Mean | number : 2}}</td>
+        <td>{{value.Median | number : 2}}</td>
+        <td>{{value.Std | number : 2}}</td>
+    </tr>
+</table>

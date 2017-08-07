@@ -1,0 +1,19 @@
+
+<form class="symbol-form" name="form" action="" ng-submit="sr.evaluateForm($event)" novalidate>
+    <label for="symbol">Add up to four Stock Symbols seperated by a comma. Or enter them individually.</label>
+    <div class="input-wrapper">
+        <input type="text" name="symbol" id="symbol" maxlength="30" placeholder="Ex: GOOG,AAPL" ng-model="sr.symbolVal">
+        <input type="submit" value="&#xf067;">
+    </div>
+</form>
+
+<div class="selected-sybols">
+    <ul class="symbol-list">
+        <li class="active" ng-repeat="symbol in sr.symbolList track by $index" ng-click='sr.removeSymbol($event, $index)'>{{symbol}}</li>
+        <li ng-repeat="notSymbol in sr.blankSymbolList track by $index"></li>
+    </ul>
+</div>
+
+<div class="symbol-exolpore">
+    <button class="cta-btn explore" type="button" ng-click="sr.exploreSumbit($event)" ng-disabled="sr.disabled">Explore</button>
+</div>

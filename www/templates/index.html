@@ -8,25 +8,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    
-                    <form class="symbol-form" action="">
-                        <label for="male">Add up to four Stock Symbols seperated by a comma. Or enter them individually.</label>
-                        <input type="text" name="symbol" id="symbol" maxlength="20" placeholder="Ex: GOOG,AAPL">
-                    </form>
-
-                    <div class="selected-sybols">
-                        <ul class="symbol-list">
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-
-                    <div class="symbol-exolpore">
-                        <button class="cta-btn explore" type="button" disabled="disabled">Explore</button>
-                    </div>
-
+                    <cm-symbol-reader></cm-symbol-reader>
                 </div>
             </div>
         </div>
@@ -35,12 +17,16 @@
 {% endblock %}
 
 {% block page_scripts %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/symbol-reader.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/symbol-reader.module.js') }}"></script>  
 
 <script>
-    // jquery document ready call
-    $(function() {
-        var symbol_reader = new SymbolReader('.symbol-form', '.symbol-list', '.cta-btn.explore', 4, 4);
+    angular.module('symbolReaderApp', [
+        'symbolReaderModule'
+    ]);
+
+    angular.element(function() {
+      angular.bootstrap(document, ['symbolReaderApp']);
     });
+
 </script>
 {% endblock %}

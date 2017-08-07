@@ -76,7 +76,10 @@ body {
 section, header, nav, footer{
 	float: left;
 	width: 100%;
-	margin: 20px 0;
+}
+
+.row{
+	padding: 30px 0;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -117,19 +120,41 @@ h2.header{
 	text-align: left;
 	color: #39a9db;
 	width: 100%;
-	padding: 0;
-	margin-bottom: 30px;
+	padding: 0 0 30px 0;
 }
 
 input[type=text]{
 	width: 100%;
-	padding: 10px 20px;
+	padding: 10px 70px 10px 20px;
 	font-family: 'Roboto', sans-serif;
 	font-size: 1.6em;
 	color: #3d3d3d;
 	border: 1px solid #8e8e8e;
 	text-transform: uppercase;
+	outline: 0;
 }
+
+input[type=text]:focus{
+	border: 1px solid #f39237;
+}
+
+input[type=submit]{
+	display: inline-block;
+	font-family: 'Roboto', sans-serif;
+	font-size: 1.6em;
+	color: #fff;
+	padding: 0 20px;
+	border: 1px solid #f39237;
+	background-color: #f39237;
+	text-transform: uppercase;
+	outline: none;
+	cursor: pointer;
+}
+
+input[type="submit"] {
+    font-family: FontAwesome;
+}
+
 
 a.cta-btn, button.cta-btn{
 	display: inline-block;
@@ -140,6 +165,7 @@ a.cta-btn, button.cta-btn{
 	padding: 10px 30px;
 	border: 1px solid #40bcd8;
 	background-color: transparent;
+	outline: none;
 }
 
 a.cta-btn:hover, button.cta-btn:hover{
@@ -235,6 +261,17 @@ Symbol Selector
 	text-align: center;
 }
 
+.input-wrapper{
+	position: relative;
+}
+
+.input-wrapper input[type='submit']{
+	position: absolute;
+	top:0;
+	right:0;
+	height: 100%;
+}
+
 /*************************************
 Footer
 *************************************/
@@ -303,14 +340,45 @@ table .fa.fa-frown-o{
 Chart stylings
 *************************************/
 
-svg.svg-graph{
+.svg-container {
+    width: 100%;
 	border: 1px solid #eee;
 }
 
-.point{
-	shape-rendering: crispEdges;
-}
 .trend-line{
 	fill: none;
 	stroke-width: 2;
 }
+
+text.text{
+	fill: #8e8e8e;
+	font-size: 1.2em;
+}
+
+
+
+/*************************************
+Media queries
+*************************************/
+@media only screen and (max-width: 580px) {
+	.symbol-list{
+		width: 240px
+	}
+
+	.symbol-list li{
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+}	
+
+@media only screen and (max-width: 480px) {
+	body {
+		font-size: 50%;
+	}
+}
+
+@media only screen and (max-width: 380px) {
+	body {
+		font-size: 40%;
+	}
+}	
