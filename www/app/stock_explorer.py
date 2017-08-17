@@ -4,7 +4,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from stock_classifier import Stock_Classifier
 
-class Stock_Explorer:
+class Stock_Explorer():
     def __init__(self, series, symbol, rolling_window_size=10, prediction_window_size=14, retrun_date_range=100):
         self.symbol = symbol
         self.stock_clf = Stock_Classifier()

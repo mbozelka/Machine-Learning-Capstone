@@ -3,7 +3,7 @@ from pandas_datareader import data, wb
 import datetime
 from dateutil.relativedelta import relativedelta
 
-class Stock_Time_Series:
+class Stock_Time_Series():
     def __init__(self, to_date=datetime.datetime.now(), year_span=2):
         start_date = to_date - relativedelta(years=year_span)
         self.dates = pd.date_range(start_date, to_date)

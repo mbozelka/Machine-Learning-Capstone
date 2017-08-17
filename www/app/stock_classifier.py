@@ -3,7 +3,7 @@ from sklearn.model_selection import TimeSeriesSplit
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
-class Stock_Classifier:
+class Stock_Classifier():
     def __init__(self, n_splits=3):
         self.n_splits = n_splits
         self.clf = Pipeline([
