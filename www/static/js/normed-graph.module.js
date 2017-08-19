@@ -42,7 +42,7 @@
 
             // generate the chart
             cntrl.chartsService.generateDateChart({
-                margins: {'top':20, 'right':20, 'bottom':30, 'left':40},
+                margins: {'top':20, 'right':20, 'bottom':50, 'left':60},
                 wrapper: '.normed-chart',
                 data: graphData.chartData,
                 dateParser: '%Y-%m-%d',

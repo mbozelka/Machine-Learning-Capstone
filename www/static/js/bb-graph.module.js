@@ -118,7 +118,7 @@
 
             // generate the chart
             cntrl.chartsService.generateDateChart({
-                margins: {'top':20, 'right':20, 'bottom':30, 'left':40},
+                margins: {'top':20, 'right':20, 'bottom':50, 'left':60},
                 wrapper: element[0].querySelector('.box-chart'),
                 data: chartData,
                 dateParser: '%Y-%m-%d',

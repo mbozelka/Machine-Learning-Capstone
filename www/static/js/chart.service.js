@@ -175,11 +175,15 @@
                     
             drawX_Axis.call(chartGroup, {
                 scaller: xScaller,
-                gHeight: gHeight
+                gHeight: gHeight,
+                gWidth: gWidth,
+                label: 'Dates'
             });
 
             drawY_Axis.call(chartGroup, {
-                scaller: yScaller
+                scaller: yScaller,
+                gHeight: gHeight,
+                label: 'Adjusted Close'
             });
 
             generateLines(chartGroup, obj, xScaller, yScaller, dateParser);
@@ -223,6 +227,14 @@
                 .classed('x axis', true)
                 .attr('transform', 'translate(0, ' + config.gHeight + ')')
                 .call(xAxis);
+
+            this.append('text')
+                .classed('x-label label', true)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.4em')
+                .attr('fill', '#8e8e8e')
+                .attr('transform', 'translate(' + (config.gWidth/2) + ', ' + (config.gHeight + 40) + ')')
+                .text(config.label);
         }
 
         /**
@@ -234,6 +246,14 @@
                 .classed('y axis', true)
                 .attr('transform', 'translate(0, 0)')
                 .call(yAxis);
+
+            this.append('text')
+                .classed('y-label label', true)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.4em')
+                .attr('fill', '#8e8e8e')
+                .attr('transform', 'rotate(-90) translate(' + (-config.gHeight/2) + ', -40)')
+                .text(config.label);
         }
 
         /**

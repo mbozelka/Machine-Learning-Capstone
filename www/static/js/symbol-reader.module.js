@@ -7,9 +7,8 @@
         .controller('SymbolReaderCtnl', SymbolReaderCtnl)
         .directive('cmSymbolReader', SymbolReader);
 
-
-    StatsDisplayCtnl.$inject = ['$timeout'];
-    function SymbolReaderCtnl($timeout) {
+    SymbolReaderCtnl.$inject = ['$rootScope'];
+    function SymbolReaderCtnl($rootScope) {
         var sr = this;
         sr.maxSymbols = 4;
         sr.symbolList = [];
@@ -26,11 +25,6 @@
             e.preventDefault();
             sr.disabled = true;
             w.location.href = 'stocks-evaluation?symbols=' + sr.symbolList.join(',');
-            //  w.location.href = 'test?symbols=' + sr.symbolList.join(',');
-            // $timeout(function(){
-            //     w.location.href = 'stocks-evaluation?symbols=' + sr.symbolList.join(',');
-            //     w.location.href = 'test?symbols=' + sr.symbolList.join(',');
-            // }, 100);
         };
 
         sr.removeSymbol = function(e, i){
@@ -46,13 +40,13 @@
             var badSymbols = [];
 
             if(inputVal.length === 0 || inputVal === ''){
-                console.log('Please enter valid inputs.');
+                $rootScope.$broadcast('notify', 'Invalid Symbols:', 'Please enter valid inputs.');
                 sr.symbolVal = '';
                 return;
             }
 
-            if(sr.symbolList.length === sr.maxSymbols){
-                console.log('You\'ve already added the max amount of Symbols.');
+            if(sr.symbolList.length >= sr.maxSymbols){
+                $rootScope.$broadcast('notify', 'Max Symbols Added:', 'You\'ve already added the max amount of Symbols.');
                 sr.symbolVal = '';
                 return;
             }
@@ -63,22 +57,21 @@
                 var trimmedVal  = vals[i].trim();
                 trimmedVal = trimmedVal.toUpperCase();
 
-                if(i > sr.symbolList){
-                    break;
-                }
-                else if(!isValidSymbol(trimmedVal)){
+                if(!isValidSymbol(trimmedVal)){
                     badSymbols.push(trimmedVal);
                 }
                 else if(sr.symbolList.indexOf(trimmedVal) !== -1){
                     badSymbols.push(trimmedVal);
                 }else{
-                    sr.symbolList.push(trimmedVal);
-                    sr.blankSymbolList.splice(0, 1);
+                    if(i < sr.maxSymbols){
+                        sr.symbolList.push(trimmedVal);
+                        sr.blankSymbolList.splice(0, 1);
+                    }
                 }
             }
 
             if(badSymbols.length > 0){
-                console.log('Invalid Symbols: ', badSymbols.join(', '));
+                $rootScope.$broadcast('notify', 'Invalid Symbols:', badSymbols.join(', '));
             }
 
             sr.disabled = (sr.symbolList.length > 0) ? false : true;

@@ -14,19 +14,25 @@
         </div>
     </div>
 </section>
+
+<cm-notifier-dir></cm-notifier-dir>
 {% endblock %}
 
 {% block page_scripts %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/symbol-reader.module.js') }}"></script>  
+<script type="text/javascript" src="{{ url_for('static', filename='js/symbol-reader.module.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/notifier.module.js') }}"></script> 
 
 <script>
-    angular.module('symbolReaderApp', [
-        'symbolReaderModule'
-    ]);
+    (function(w, d) {
+        'use strict';
+        angular.module('symbolReaderApp', [
+            'symbolReaderModule',
+            'Notifier'
+        ]);
 
-    angular.element(function() {
-      angular.bootstrap(document, ['symbolReaderApp']);
-    });
-
+        angular.element(function() {
+        angular.bootstrap(document, ['symbolReaderApp']);
+        });
+    })(window, document);
 </script>
 {% endblock %}

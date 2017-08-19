@@ -382,3 +382,57 @@ Media queries
 		font-size: 40%;
 	}
 }	
+
+
+/*************************************
+Notifier
+*************************************/
+
+.notifier-wrap{
+	position: fixed;
+	visibility: hidden;
+	opacity: 0;
+	left: 0;
+	width: 100%;
+	-webkit-transition: all 250ms ease;
+	-moz-transition: all 250ms ease;
+	-ms-transition: all 250ms ease;
+	-o-transition: all 250ms ease;
+	transition: all 250ms ease;
+}
+
+.notifier-wrap.active{
+	visibility: visible;
+	opacity: 1;
+}
+
+.notification{
+	position: relative;
+	width: 300px;
+	top: 200px;
+	margin: 0 auto;
+	color: #fff;
+	text-align: center;
+	background: #f39237;
+	padding: 50px 20px;
+	border: 1px solid #fff;
+}
+
+.notification h3{
+	position: absolute;
+	top:10px;
+	left: 10px;
+	font-size: 1.8em;
+}
+
+/*************************************
+Loader
+*************************************/
+.loader-wrap{
+	position: fixed;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: red;
+}

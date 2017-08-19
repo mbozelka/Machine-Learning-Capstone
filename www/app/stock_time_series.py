@@ -20,7 +20,8 @@ class Stock_Time_Series():
         try:
             df = self.__fetch_data('SPY')
             good_symbols.append('SPY')
-        except Exception:
+        except Exception as e:
+            print(e)
             bad_symbols.append('SPY')
 
 
@@ -36,7 +37,8 @@ class Stock_Time_Series():
                 df[symbol] = data_df
                 good_symbols.append(symbol)
 
-            except Exception:
+            except Exception as e:
+                print(e)
                 bad_symbols.append(symbol)
 
         df = df.dropna(subset=['SPY'])

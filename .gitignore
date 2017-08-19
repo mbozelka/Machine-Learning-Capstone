@@ -1,6 +1,7 @@
 
 # Project Specific
 #project/data-exploration/data/
+*.docx
 
 # Mac OSX
 .DS_Store
