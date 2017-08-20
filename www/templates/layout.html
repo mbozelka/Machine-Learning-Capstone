@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{% block title %}{% endblock %} | Stock Price Predictor</title>
+        <title>{% block page_title %}{% endblock %} | Stock Price Predictor</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
@@ -15,10 +15,32 @@
 
     </head>
     <body>
-        {% include 'header.html' %}
+        <header>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <h1>{% block title %}{% endblock %}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+            
+        <section id="disclaimer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <p><sup>*</sup> This page was created purely for academic reasons. The information should not be used in real life stock trading.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         {% block content %}{% endblock %}
         {% include 'footer.html' %}
-        {% include 'scripts.html' %}
+        {% include 'global-scripts.html' %}
         {% block page_scripts %}{% endblock %}
     </body>
 </html>

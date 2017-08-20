@@ -1,3 +1,12 @@
+
+/*
+    normalizedGraph
+
+    AngularJS Module for displaying normalized data comparison graph of stocks.
+
+    Uses the DataService and ChartService API.
+*/
+
 (function(w, d) {
     'use strict';
 

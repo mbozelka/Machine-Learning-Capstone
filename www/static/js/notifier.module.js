@@ -1,4 +1,13 @@
 
+/*
+    Notifier
+
+    AngularJS Module for displaying notifcations 
+    to alert users to specific callouts.
+
+    Relies on broadcasting and listens for the 'notify' event
+*/
+
 (function(w, d) {
     'use strict';
     angular.module('Notifier', [])

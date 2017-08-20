@@ -1,5 +1,11 @@
 
 
+/*
+    predictions
+
+    AngularJS Module for displaying predictions of chosen stocks
+*/
+
 (function(w, d) {
     'use strict';
 

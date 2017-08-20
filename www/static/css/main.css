@@ -419,9 +419,8 @@ Notifier
 }
 
 .notification h3{
-	position: absolute;
-	top:10px;
-	left: 10px;
+	text-align: center;
+	padding-bottom: 10px;
 	font-size: 1.8em;
 }
 
@@ -429,10 +428,28 @@ Notifier
 Loader
 *************************************/
 .loader-wrap{
+	display: none;
 	position: fixed;
 	top:0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: red;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-color: rgba(255, 255, 255, 0.7);
+	background-image: url('../images/ajax-loader.gif')
+}
+
+.loader-wrap.active{
+	display: block;
+}
+
+
+/*************************************
+error
+*************************************/
+
+#error h2{
+	text-align: center;
+	font-size: 3em;
 }

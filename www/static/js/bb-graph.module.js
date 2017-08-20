@@ -1,3 +1,12 @@
+/*
+    bbGraph
+
+    AngularJS Module for displaying Bollinger Band graph of stocks.
+
+    Uses the DataService and ChartService API.
+*/
+
+
 (function(w, d) {
     'use strict';
 

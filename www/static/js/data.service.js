@@ -1,4 +1,12 @@
 
+/*
+    dataService
+
+    AngularJS Module for creating an API for other modules
+    to utilize the Stock data returned from the server.
+
+*/
+
 (function(w, d) {
     'use strict';
 
@@ -15,10 +23,20 @@
         };
         return service;
 
+        /*
+            Retrieve full data set of stocks
+        */
         function getData() {
             return data;
         }
 
+        /*
+            Returns the indices of predictions.
+            Used to split the data values from historical data
+            and prediction data
+
+            NOTE:  Future iterations should return this from server
+        */
         function getPredictionIndicies(){
             var intervals = [];
             var predictionRange = data['Stocks'][0]['Prediction_Size'];
@@ -31,6 +49,9 @@
             return intervals;
         }
 
+        /**
+         * Returns the stats of each stock as an array
+         */
         function getStats(){
             var stats = [];
 

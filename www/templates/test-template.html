@@ -32,6 +32,7 @@
 <!-- Predicted Fututre Values -->
 <cm-prediction-breakdown></cm-prediction-breakdown>
 
+<cm-notifier-dir></cm-notifier-dir>
 {% endblock %}
 
 {% block page_scripts %}
@@ -41,7 +42,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/bb-graph.module.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/normed-graph.module.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/stats.module.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/predictions.module.js') }}"></script> 
+<script type="text/javascript" src="{{ url_for('static', filename='js/predictions.module.js') }}"></script>
 
 <script>
     console.log(window.stockData);
@@ -53,12 +54,24 @@
         'normalizedGraph',
         'bbGraph',
         'statsModule',
-        'predictions'
-    ]);
+        'predictions',
+        'Notifier'
+    ])
+    .controller('PageLoadCtnl', PageLoadCtnl);
 
-    angular.element(function() {
-      angular.bootstrap(document, ['displayApp']);
-    });
+    PageLoadCtnl.$inject = ['$rootScope', 'DataService'];
+    function PageLoadCtnl($rootScope, DataService){
+        var data = DataService.getData();
+        console.log(data);
+        if(data.errors.length == 0){
+            console.log('shoud broadcasr');
+            $rootScope.$broadcast('notify', 'Invalid Symbols:', data.errors.join(', '));
+        }
+    }
+
+angular.element(function() {
+  angular.bootstrap(document, ['displayApp']);
+});
 
 </script>
 {% endblock %}

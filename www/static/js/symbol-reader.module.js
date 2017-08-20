@@ -1,5 +1,9 @@
 
+/*
+    symbolReaderModule
 
+    AngularJS Module used for evaluating user entered stock symbols.
+*/
 (function(w, d) {
     'use strict';
 
@@ -23,6 +27,7 @@
 
         sr.exploreSumbit = function(e){
             e.preventDefault();
+            $rootScope.$broadcast('launch-loader');
             sr.disabled = true;
             w.location.href = 'stocks-evaluation?symbols=' + sr.symbolList.join(',');
         };

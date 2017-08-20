@@ -1,5 +1,9 @@
 
+/*
+    statsModule
 
+    AngularJS Module for displaying statistics of chosen stocks
+*/
 (function(w, d) {
     'use strict';
 

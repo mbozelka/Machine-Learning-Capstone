@@ -1,5 +1,6 @@
 
 {% extends 'layout.html' %}
+{% block page_title %}Evaluated Stock Prices{% endblock %}
 {% block title %}Evaluated Stock Prices{% endblock %}
 
 {% block content %}
@@ -33,6 +34,7 @@
 <!-- Predicted Fututre Values -->
 <cm-prediction-breakdown></cm-prediction-breakdown>
 
+<cm-notifier-dir></cm-notifier-dir>
 {% endblock %}
 
 {% block page_scripts %}
@@ -45,9 +47,7 @@
 
 <script>
     window.stockData = JSON.parse('{{ data | tojson | safe}}');
-
-    console.log(window.stockData);
-
+    
     angular.module('displayApp', [
         'dataService',
         'chartService',

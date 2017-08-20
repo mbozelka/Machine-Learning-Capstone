@@ -1,4 +1,14 @@
 
+/*
+    chartService
+
+    AngularJS Module for creating an API for Displaying graphs with D3.js.
+
+    NOTE: Much of this code is not truly reusable and should be reorganized
+    and heavily modified in future iterations of web app.
+
+*/
+
 (function(w, d) {
     'use strict';
 
@@ -104,6 +114,11 @@
             };
         };
 
+        /**
+         * Specific to this web app. 
+         * Returns a usable format of data to draw
+         * a graphs legends
+         */
         function generateLegend(obj) {
             var legend, legendGroup, legendHeight,
                 recWidth, recHeight, legendSpacing;
@@ -134,7 +149,13 @@
                 recHeight: recHeight
             });
         }
-
+        
+        /**
+         * 
+         * main funciton for generting charts for this applicatin
+         * 
+         * Obj is graph overrides
+         */
         function generateDateChart(obj) {
     
             var chart, chartGroup, chartWidth, chartHeight,

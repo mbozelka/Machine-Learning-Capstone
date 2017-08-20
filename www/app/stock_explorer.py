@@ -5,7 +5,27 @@ from dateutil.relativedelta import relativedelta
 from stock_classifier import Stock_Classifier
 
 class Stock_Explorer():
+    """ Stock_Explorer Class
+
+        Interacts with a single Stocks data to 
+        evaluate it, and return predicted future 
+        values
+    """
+
     def __init__(self, series, symbol, rolling_window_size=10, prediction_window_size=14, retrun_date_range=100):
+        """ Initialize Stock_Explorer
+
+            keyword Arguments:
+            series = Pandas Series of the Stocks data. Dates as index, and values
+                for Adjusted Close.
+            symbol = String of symbol to be evaluated. Ex: 'SPY' 
+            rolling_window_size = The widnow size for Rolling statistics. default 10, 
+            prediction_window_size = The amount of dates out to 
+                predict future values. default 14, 
+            retrun_date_range = range of dates that should be evaluated. Used
+                for training the classifer and stats. default is 100 days
+        """
+
         self.symbol = symbol
         self.stock_clf = Stock_Classifier()
         self.series = series
@@ -16,6 +36,26 @@ class Stock_Explorer():
 
 
     def get_json(self):
+        """ Retrun Dict of stocks exploration
+
+            Public method used to get all the stocks
+            exploration and predictions.
+
+            Data returned:
+                'Symbol'
+                'BB_Ratios'
+                'Momentum'
+                'SMA_Ratios'
+                'SMA'
+                'Lower_bb'
+                'Upper_bb'
+                'Target_Vals'
+                'Normed_Data'
+                'Stats'
+                'Prediction_Size'
+                'Train_Test_Data'
+                'Dates'
+        """
         final_json = {}
         
         # if set is empty send back error error
@@ -58,6 +98,11 @@ class Stock_Explorer():
 
 
     def __dates_to_string(self, date_range):
+        """ returns a list of dates as string values 
+            
+            Private Method
+        """
+
         dates = self.series.tail(date_range).index.strftime('%Y-%m-%d').tolist()
         return dates
         
@@ -65,6 +110,13 @@ class Stock_Explorer():
 
 
     def __predict_vals(self):
+        """ Return None 
+
+            Makes the future predictions based on prediction window size
+
+            Private Method
+        """
+
         pw = self.prediction_window_size
         
         for i in range(0 , pw):
@@ -75,6 +127,13 @@ class Stock_Explorer():
 
 
     def __update_series(self, new_val):
+        """ Return None 
+
+            Updates the series of data with the new prediction value
+
+            Private Method
+        """
+
         new_date = self.series.index[-1] + relativedelta(days=1)
         new_target = pd.Series([new_val], index=[new_date])
         self.series = self.series.append(new_target)
@@ -84,6 +143,14 @@ class Stock_Explorer():
 
 
     def __get_X_y(self):
+        """ Return None 
+
+            Updates class properties X_features and y_features
+            with appropriate series values
+
+            Private Method
+        """
+
         w = self.rolling_window_size
         features_df = { 'BB_RATIOS' : self.__get_bollinger_ratios(), 
              'SMA_RATIOS' : self.__get_sma_ratio(), 
@@ -97,6 +164,14 @@ class Stock_Explorer():
 
 
     def __train_and_test(self):
+        """ Return Dict of training and testing scores
+
+            Uses class properdies to train and test
+            the data against the classifier property
+
+            Private Method
+        """
+
         X = self.X_features[0 : -1].values
         y = self.y_target[1 : ].values
         
@@ -117,6 +192,11 @@ class Stock_Explorer():
 
 
     def __get_rolling_mean(self):
+        """ Return series of Rolling Mean Values
+
+            Private Method
+        """
+
         w = self.rolling_window_size
         sma = self.series.rolling(w, center=False).mean()
         return sma[w:]
@@ -125,6 +205,11 @@ class Stock_Explorer():
 
 
     def __get_rolling_std(self):
+        """ Return series of Rolling STD Values
+        
+            Private Method
+        """
+
         w = self.rolling_window_size
         r_std = self.series.rolling(w, center=False).std()
         return r_std[w:]
@@ -133,6 +218,13 @@ class Stock_Explorer():
 
 
     def __get_bollinger_bands(self):
+        """ Returns two series
+            lower_band Bollinger Band values
+            and upper_band Bollinger Band values
+        
+            Private Method
+        """
+
         lower_band = self.__get_rolling_mean() - (self.__get_rolling_std() * 2)
         upper_band = self.__get_rolling_mean() + (self.__get_rolling_std() * 2)
         return lower_band, upper_band
@@ -141,6 +233,11 @@ class Stock_Explorer():
 
 
     def __get_bollinger_ratios(self):
+        """ Returns series of Bollinger Band Ratios
+        
+            Private Method
+        """
+
         bb = self.series.copy()
         sma = self.__get_rolling_mean()
         r_std = self.__get_rolling_std()
@@ -152,6 +249,11 @@ class Stock_Explorer():
 
 
     def __get_momentum(self):
+        """ Returns series of Momentum values
+        
+            Private Method
+        """
+
         momentum = self.series.copy()
         w = self.rolling_window_size
         momentum[w:] = (momentum[w:] / momentum[0:-w].values) - 1
@@ -161,6 +263,11 @@ class Stock_Explorer():
 
 
     def __get_sma_ratio(self):
+        """ Returns series of SMA values
+        
+            Private Method
+        """
+
         sma = self.series.copy()
         w = self.rolling_window_size
         sma[w:] = (sma[w:] / sma[0:-w].mean()) - 1
@@ -170,6 +277,14 @@ class Stock_Explorer():
 
 
     def __get_normalize_values(self, date_range):
+        """ Returns series of SMA values
+
+            date_range = Intiger. Number of days back from
+                the end of series data to normalize
+
+            Private Method
+        """
+
         return_range = self.series.tail(date_range)
         normed = return_range /return_range [0:1].values
         return normed
@@ -178,6 +293,14 @@ class Stock_Explorer():
 
 
     def __get_stats(self, series):
+        """ Returns series of SMA values
+
+            series = PD Series of values to get 
+                basic statistics on
+
+            Private Method
+        """
+
         vals = series.values
         return {
             'Mean' : np.mean(vals),
@@ -189,5 +312,13 @@ class Stock_Explorer():
 
 
     def __replace_nan(self, df_copy):
+        """ returns data frame with nan values replaced with
+                datas mean
+
+            df_copy = dataframe to remove nan values from
+
+            Private Method
+        """
+
         df = df_copy.copy().replace([np.inf, -np.inf], np.nan)
         return df.fillna(df.mean())

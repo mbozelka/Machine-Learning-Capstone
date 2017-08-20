@@ -5,6 +5,16 @@ from stock_explorer import Stock_Explorer
 
 
 def stocks_data(symbol_list):
+    """ return full JSON data from stock predictions 
+
+        keyword Arguments:
+        symbol_list = an array of stock symbols. ex: ['SPY', 'GOOG']
+
+        The main entry point into gathering stock data,
+        running it through the classifer, and returning
+        all the data needed for the html rendering.
+    """
+
     sts = Stock_Time_Series()
     symbol_list = list(OrderedDict.fromkeys(symbol_list))
 
