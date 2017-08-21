@@ -1,8 +1,8 @@
 
 from flask import Flask, redirect, url_for, render_template, request
-from app.stock_time_series import Stock_Time_Series
-from app.stock_explorer import Stock_Explorer
-from app.main import stocks_data
+from stock_time_series import Stock_Time_Series
+from stock_explorer import Stock_Explorer
+from main import stocks_data
 
 app = Flask(__name__)
 
