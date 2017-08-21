@@ -13,8 +13,8 @@
                         </tr>
                         <tr ng-repeat="(key, value) in pb.stocks"> 
                             <th>{{value.Symbol}}</th>
-                            <td>%{{value.Train_Test_Data.train_mean * 100 | number : 2}}</td>
-                            <td>%{{value.Train_Test_Data.test_mean * 100 | number : 2}}</td>
+                            <td>{{value.Train_Test_Data.train_mean * 100 | number : 2}}%</td>
+                            <td>{{value.Train_Test_Data.test_mean * 100 | number : 2}}%</td>
                         </tr>
                     </table>
                 </div>
